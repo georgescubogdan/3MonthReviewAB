@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import {ToastrService} from 'ngx-toastr';
-import { UpdateTimestampService } from '../../dashboard/services/update-timestamp.service';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { AuthService } from 'src/app/auth.service';
@@ -51,7 +50,6 @@ export class PasswordComponent implements OnInit {
   }
 }
   constructor(public activeModal: NgbActiveModal
-            , public updateTimestampService: UpdateTimestampService
             , public toastrService: ToastrService
             , private auth: AuthService
             , private router: Router

@@ -9,12 +9,17 @@ import { SortableDirective } from './directives/sortable.directive';
 import {AccordionModule} from 'ngx-accordion';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import {AuthGuardService} from '../guards/auth-guard.service';
+import { HomeComponent } from './home/home.component';
+import { DashboardComponent } from './dashboard/dashboard.component';
 
 
 @NgModule({
   declarations: [
 
     SortableDirective,
+
+    DashboardComponent,
+    HomeComponent,
 
 
   ],

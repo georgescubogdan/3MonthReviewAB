@@ -4,9 +4,6 @@ import { Observable, Subject, ReplaySubject } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { FirmDataApiResult } from './util/identity';
 import { Router } from '@angular/router';
-import { UserData } from './dashboard/models/user-data';
-import { ResetPassData } from './dashboard/models/reset-pass-data';
-
 
 @Injectable({
   providedIn: 'root'
@@ -34,24 +31,18 @@ export class AuthService {
   /*cui: 9646987*/
 
 
-  getCurrentUserData(): Promise<UserData> {
-    const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
-    return this.http
-        .post<UserData>(environment.taskApiUrl + '/GetUserData', '', {responseType: 'json', headers})
-        .toPromise();
-  }
 
   getCurrentUserRoles(): Promise<string[]> {
     const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
     return this.http
-        .post<string[]>(environment.taskApiUrl + '/GetUserRole', '', {responseType: 'json', headers})
+        .post<string[]>(environment.accountApiUrl + '/GetUserRole', '', {responseType: 'json', headers})
         .toPromise();
   }
 
   getCurrentUserName(): Promise<string> {
     const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
     return this.http
-        .post(environment.taskApiUrl + '/GetUserFullName', '', {responseType: 'text', headers})
+        .post(environment.accountApiUrl + '/GetUserFullName', '', {responseType: 'text', headers})
         .toPromise();
   }
 
@@ -59,14 +50,14 @@ export class AuthService {
     const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
     const body = JSON.stringify({ email, oldPassword, newPassword});
     return this.http
-      .put(environment.taskApiUrl + '/ChangePassword', body, {responseType: 'text', headers})
+      .put(environment.accountApiUrl + '/ChangePassword', body, {responseType: 'text', headers})
       .toPromise();
   }
 
   shouldChangePassword() {
     const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
     return this.http
-      .get(environment.taskApiUrl + '/GetShouldChangePassword' , {responseType: 'json', headers})
+      .get(environment.accountApiUrl + '/GetShouldChangePassword' , {responseType: 'json', headers})
       .toPromise();
   }
 
@@ -76,7 +67,7 @@ export class AuthService {
 
     return this.http
       .post(
-        environment.taskApiUrl + '/Login',
+        environment.accountApiUrl + '/Login',
         body,
         { headers , responseType: 'text'}
       )

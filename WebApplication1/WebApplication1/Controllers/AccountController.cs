@@ -87,7 +87,9 @@ namespace WebApplication1.Controllers
       {
         UserName = model.Email,
         Email = model.Email,
-        PhoneNumber = model.PhoneNumber
+        PhoneNumber = model.PhoneNumber,
+        FirstName = model.FirstName,
+        LastName = model.LastName
       };
 
       var result = await _userManager.CreateAsync(user, model.Password);
@@ -189,7 +191,11 @@ namespace WebApplication1.Controllers
 
       [Required]
       public string PhoneNumber { get; set; }
-     
+      [Required]
+      public string FirstName { get; set; }
+      [Required]
+      public string LastName { get; set; }
+
 
     }
 
