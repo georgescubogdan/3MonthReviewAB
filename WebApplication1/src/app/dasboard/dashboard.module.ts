@@ -13,7 +13,9 @@ import {AuthGuardService} from '../guards/auth-guard.service';
 
 @NgModule({
   declarations: [
+
     SortableDirective,
+
 
   ],
   imports: [
