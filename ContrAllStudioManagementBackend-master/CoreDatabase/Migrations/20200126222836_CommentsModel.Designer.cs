@@ -9,8 +9,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CoreDatabase.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    [Migration("20191107131027_userRoles")]
-    partial class userRoles
+    [Migration("20200126222836_CommentsModel")]
+    partial class CommentsModel
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -124,6 +124,66 @@ namespace CoreDatabase.Migrations
                     b.ToTable("UserModels");
                 });
 
+            modelBuilder.Entity("CoreModels.Models.Clocking", b =>
+                {
+                    b.Property<int>("ClockingId")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<int>("DateId");
+
+                    b.Property<DateTime>("EndTime");
+
+                    b.Property<DateTime>("StartTime");
+
+                    b.HasKey("ClockingId");
+
+                    b.HasIndex("DateId");
+
+                    b.ToTable("Clockings");
+                });
+
+            modelBuilder.Entity("CoreModels.Models.Comment", b =>
+                {
+                    b.Property<int>("CommentId")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<int>("TaskId");
+
+                    b.Property<string>("Text");
+
+                    b.Property<int>("UserId");
+
+                    b.HasKey("CommentId");
+
+                    b.HasIndex("TaskId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Comments");
+                });
+
+            modelBuilder.Entity("CoreModels.Models.Date", b =>
+                {
+                    b.Property<int>("DateId")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<DateTime>("CurrentDate");
+
+                    b.Property<int>("Hours");
+
+                    b.Property<int>("Minutes");
+
+                    b.Property<int>("Seconds");
+
+                    b.Property<int>("UserId");
+
+                    b.HasKey("DateId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Dates");
+                });
+
             modelBuilder.Entity("CoreModels.Models.IbanModel", b =>
                 {
                     b.Property<int>("IbanModelId")
@@ -187,6 +247,18 @@ namespace CoreDatabase.Migrations
                     b.ToTable("AspNetRoles");
                 });
 
+            modelBuilder.Entity("CoreModels.Models.State", b =>
+                {
+                    b.Property<int>("StateId")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("Title");
+
+                    b.HasKey("StateId");
+
+                    b.ToTable("States");
+                });
+
             modelBuilder.Entity("CoreModels.Models.SubDomainModel", b =>
                 {
                     b.Property<int>("SubDomainId")
@@ -205,6 +277,28 @@ namespace CoreDatabase.Migrations
                     b.HasKey("SubDomainId");
 
                     b.ToTable("SubDomainModels");
+                });
+
+            modelBuilder.Entity("CoreModels.Models.Task", b =>
+                {
+                    b.Property<int>("TaskId")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("Description");
+
+                    b.Property<int>("Priority");
+
+                    b.Property<int>("StateId");
+
+                    b.Property<string>("Title");
+
+                    b.Property<int>("UserId");
+
+                    b.HasKey("TaskId");
+
+                    b.HasIndex("StateId");
+
+                    b.ToTable("Tasks");
                 });
 
             modelBuilder.Entity("CoreModels.Models.UserModel", b =>
@@ -248,6 +342,8 @@ namespace CoreDatabase.Migrations
 
                     b.Property<string>("SecurityStamp");
 
+                    b.Property<short>("ShouldGetPassword");
+
                     b.Property<short>("TwoFactorEnabled");
 
                     b.Property<string>("UserName")
@@ -271,19 +367,54 @@ namespace CoreDatabase.Migrations
 
                     b.Property<int>("RoleId");
 
-                    b.Property<int?>("RoleId1");
+                    b.Property<int?>("RoleModelId");
 
-                    b.Property<int?>("UserId1");
+                    b.Property<int?>("UserModelId");
 
                     b.HasKey("UserId", "RoleId");
 
                     b.HasIndex("RoleId");
 
-                    b.HasIndex("RoleId1");
+                    b.HasIndex("RoleModelId");
 
-                    b.HasIndex("UserId1");
+                    b.HasIndex("UserModelId");
 
                     b.ToTable("AspNetUserRoles");
+                });
+
+            modelBuilder.Entity("CoreModels.Models.UserTaskModel", b =>
+                {
+                    b.Property<int>("TaskId");
+
+                    b.Property<int>("UserId");
+
+                    b.HasKey("TaskId", "UserId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("UserTaskModels");
+                });
+
+            modelBuilder.Entity("CoreModels.Models.VacationDayModel", b =>
+                {
+                    b.Property<int>("VacationDayID")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<DateTime>("From");
+
+                    b.Property<string>("Reason");
+
+                    b.Property<short>("State");
+
+                    b.Property<DateTime>("To");
+
+                    b.Property<int>("UserId");
+
+                    b.HasKey("VacationDayID");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("VacationDays");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<int>", b =>
@@ -354,6 +485,35 @@ namespace CoreDatabase.Migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
+            modelBuilder.Entity("CoreModels.Models.Clocking", b =>
+                {
+                    b.HasOne("CoreModels.Models.Date", "Date")
+                        .WithMany("Clockings")
+                        .HasForeignKey("DateId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("CoreModels.Models.Comment", b =>
+                {
+                    b.HasOne("CoreModels.Models.Task", "Task")
+                        .WithMany("Comments")
+                        .HasForeignKey("TaskId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("CoreModels.Models.UserModel", "User")
+                        .WithMany("Comments")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("CoreModels.Models.Date", b =>
+                {
+                    b.HasOne("CoreModels.Models.UserModel", "User")
+                        .WithMany("Date")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
             modelBuilder.Entity("CoreModels.Models.IbanModel", b =>
                 {
                     b.HasOne("CoreModels.Models.ProfileModel", "Profile")
@@ -370,6 +530,14 @@ namespace CoreDatabase.Migrations
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
+            modelBuilder.Entity("CoreModels.Models.Task", b =>
+                {
+                    b.HasOne("CoreModels.Models.State", "State")
+                        .WithMany("Tasks")
+                        .HasForeignKey("StateId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
             modelBuilder.Entity("CoreModels.Models.UserRoleModel", b =>
                 {
                     b.HasOne("CoreModels.Models.RoleModel")
@@ -377,18 +545,39 @@ namespace CoreDatabase.Migrations
                         .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Cascade);
 
-                    b.HasOne("CoreModels.Models.RoleModel", "Role")
+                    b.HasOne("CoreModels.Models.RoleModel", "RoleModel")
                         .WithMany("UserRoles")
-                        .HasForeignKey("RoleId1");
+                        .HasForeignKey("RoleModelId");
 
                     b.HasOne("CoreModels.Models.UserModel")
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade);
 
-                    b.HasOne("CoreModels.Models.UserModel", "User")
+                    b.HasOne("CoreModels.Models.UserModel", "UserModel")
                         .WithMany("UserRoles")
-                        .HasForeignKey("UserId1");
+                        .HasForeignKey("UserModelId");
+                });
+
+            modelBuilder.Entity("CoreModels.Models.UserTaskModel", b =>
+                {
+                    b.HasOne("CoreModels.Models.Task", "Task")
+                        .WithMany("UserTaskModels")
+                        .HasForeignKey("TaskId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("CoreModels.Models.UserModel", "User")
+                        .WithMany("UserTaskModels")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("CoreModels.Models.VacationDayModel", b =>
+                {
+                    b.HasOne("CoreModels.Models.UserModel", "User")
+                        .WithMany("VacationDays")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<int>", b =>

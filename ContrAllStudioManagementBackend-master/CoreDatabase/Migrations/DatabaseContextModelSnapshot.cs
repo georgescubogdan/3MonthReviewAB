@@ -140,6 +140,26 @@ namespace CoreDatabase.Migrations
                     b.ToTable("Clockings");
                 });
 
+            modelBuilder.Entity("CoreModels.Models.Comment", b =>
+                {
+                    b.Property<int>("CommentId")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<int>("TaskId");
+
+                    b.Property<string>("Text");
+
+                    b.Property<int>("UserId");
+
+                    b.HasKey("CommentId");
+
+                    b.HasIndex("TaskId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Comments");
+                });
+
             modelBuilder.Entity("CoreModels.Models.Date", b =>
                 {
                     b.Property<int>("DateId")
@@ -225,6 +245,18 @@ namespace CoreDatabase.Migrations
                     b.ToTable("AspNetRoles");
                 });
 
+            modelBuilder.Entity("CoreModels.Models.State", b =>
+                {
+                    b.Property<int>("StateId")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("Title");
+
+                    b.HasKey("StateId");
+
+                    b.ToTable("States");
+                });
+
             modelBuilder.Entity("CoreModels.Models.SubDomainModel", b =>
                 {
                     b.Property<int>("SubDomainId")
@@ -243,6 +275,28 @@ namespace CoreDatabase.Migrations
                     b.HasKey("SubDomainId");
 
                     b.ToTable("SubDomainModels");
+                });
+
+            modelBuilder.Entity("CoreModels.Models.Task", b =>
+                {
+                    b.Property<int>("TaskId")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("Description");
+
+                    b.Property<int>("Priority");
+
+                    b.Property<int>("StateId");
+
+                    b.Property<string>("Title");
+
+                    b.Property<int>("UserId");
+
+                    b.HasKey("TaskId");
+
+                    b.HasIndex("StateId");
+
+                    b.ToTable("Tasks");
                 });
 
             modelBuilder.Entity("CoreModels.Models.UserModel", b =>
@@ -324,6 +378,19 @@ namespace CoreDatabase.Migrations
                     b.HasIndex("UserModelId");
 
                     b.ToTable("AspNetUserRoles");
+                });
+
+            modelBuilder.Entity("CoreModels.Models.UserTaskModel", b =>
+                {
+                    b.Property<int>("TaskId");
+
+                    b.Property<int>("UserId");
+
+                    b.HasKey("TaskId", "UserId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("UserTaskModels");
                 });
 
             modelBuilder.Entity("CoreModels.Models.VacationDayModel", b =>
@@ -424,6 +491,19 @@ namespace CoreDatabase.Migrations
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
+            modelBuilder.Entity("CoreModels.Models.Comment", b =>
+                {
+                    b.HasOne("CoreModels.Models.Task", "Task")
+                        .WithMany("Comments")
+                        .HasForeignKey("TaskId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("CoreModels.Models.UserModel", "User")
+                        .WithMany("Comments")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
             modelBuilder.Entity("CoreModels.Models.Date", b =>
                 {
                     b.HasOne("CoreModels.Models.UserModel", "User")
@@ -448,6 +528,14 @@ namespace CoreDatabase.Migrations
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
+            modelBuilder.Entity("CoreModels.Models.Task", b =>
+                {
+                    b.HasOne("CoreModels.Models.State", "State")
+                        .WithMany("Tasks")
+                        .HasForeignKey("StateId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
             modelBuilder.Entity("CoreModels.Models.UserRoleModel", b =>
                 {
                     b.HasOne("CoreModels.Models.RoleModel")
@@ -467,6 +555,19 @@ namespace CoreDatabase.Migrations
                     b.HasOne("CoreModels.Models.UserModel", "UserModel")
                         .WithMany("UserRoles")
                         .HasForeignKey("UserModelId");
+                });
+
+            modelBuilder.Entity("CoreModels.Models.UserTaskModel", b =>
+                {
+                    b.HasOne("CoreModels.Models.Task", "Task")
+                        .WithMany("UserTaskModels")
+                        .HasForeignKey("TaskId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("CoreModels.Models.UserModel", "User")
+                        .WithMany("UserTaskModels")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("CoreModels.Models.VacationDayModel", b =>

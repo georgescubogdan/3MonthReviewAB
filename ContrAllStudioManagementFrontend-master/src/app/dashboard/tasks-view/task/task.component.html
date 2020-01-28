@@ -1,0 +1,28 @@
+<div class="modal-header">
+  <h4 class="modal-title">Task</h4>
+  <button type="button" class="close" aria-label="Close" (click)="activeModal.dismiss('Cross click')">
+      <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+<div class="modal-body">
+<form [formGroup]="taskForm" (ngSubmit)="onSubmitTask()">
+  <div class="form-row">
+    <div class="form-group">
+       Titlu: <input mdbValidate type="text" class="form-control"  oninput="this.value = this.value" formControlName="title">
+    </div>
+    <div class="form-group">
+      <input  type="number" class="form-control" formControlName="taskId" [(ngModel)]="task.taskId" hidden>
+    </div>
+  </div>
+  <div class="form-row">
+    <div class="form-group">
+       Descriere: <input mdbValidate type="text" class="form-control" oninput="this.value = this.value" formControlName="description">
+    </div>
+  </div>
+<br>
+</form>
+</div>
+<div class="modal-footer">
+<button type="button" [disabled]="!activeButton || taskForm.invalid" ngbAutofocus class="btn focus-btn col-6" (click)="onSubmitTask()">Salvare</button>
+<button type="button" class="btn sec-focus-btn col-6" (click)="activeModal.close('Close click')">Anulare</button>
+</div>

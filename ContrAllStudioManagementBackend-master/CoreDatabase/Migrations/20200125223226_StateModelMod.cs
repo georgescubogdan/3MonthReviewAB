@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace CoreDatabase.Migrations
 {
-    public partial class identityModels : Migration
+    public partial class StateModelMod : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -43,7 +43,8 @@ namespace CoreDatabase.Migrations
                     LockoutEnabled = table.Column<short>(nullable: false),
                     AccessFailedCount = table.Column<int>(nullable: false),
                     FirstName = table.Column<string>(maxLength: 20, nullable: false),
-                    LastName = table.Column<string>(maxLength: 20, nullable: false)
+                    LastName = table.Column<string>(maxLength: 20, nullable: false),
+                    ShouldGetPassword = table.Column<short>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -101,6 +102,19 @@ namespace CoreDatabase.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "States",
+                columns: table => new
+                {
+                    StateId = table.Column<int>(nullable: false)
+                        .Annotation("MySQL:AutoIncrement", true),
+                    Title = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_States", x => x.StateId);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "SubDomainModels",
                 columns: table => new
                 {
@@ -131,6 +145,27 @@ namespace CoreDatabase.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_UpdatesModels", x => x.UpdatesModelId);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "UserModels",
+                columns: table => new
+                {
+                    ClientId = table.Column<string>(nullable: false),
+                    Name = table.Column<string>(nullable: true),
+                    County = table.Column<string>(nullable: true),
+                    City = table.Column<string>(nullable: true),
+                    Sal = table.Column<short>(nullable: false),
+                    Reg = table.Column<short>(nullable: false),
+                    Vmg = table.Column<short>(nullable: false),
+                    Ail = table.Column<short>(nullable: false),
+                    Asf = table.Column<short>(nullable: false),
+                    Imp = table.Column<short>(nullable: false),
+                    Con = table.Column<short>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_UserModels", x => x.ClientId);
                 });
 
             migrationBuilder.CreateTable(
@@ -200,7 +235,9 @@ namespace CoreDatabase.Migrations
                 columns: table => new
                 {
                     UserId = table.Column<int>(nullable: false),
-                    RoleId = table.Column<int>(nullable: false)
+                    RoleId = table.Column<int>(nullable: false),
+                    UserModelId = table.Column<int>(nullable: true),
+                    RoleModelId = table.Column<int>(nullable: true)
                 },
                 constraints: table =>
                 {
@@ -212,11 +249,23 @@ namespace CoreDatabase.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
+                        name: "FK_AspNetUserRoles_AspNetRoles_RoleModelId",
+                        column: x => x.RoleModelId,
+                        principalTable: "AspNetRoles",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
                         name: "FK_AspNetUserRoles_AspNetUsers_UserId",
                         column: x => x.UserId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_AspNetUserRoles_AspNetUsers_UserModelId",
+                        column: x => x.UserModelId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -240,6 +289,75 @@ namespace CoreDatabase.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Dates",
+                columns: table => new
+                {
+                    DateId = table.Column<int>(nullable: false)
+                        .Annotation("MySQL:AutoIncrement", true),
+                    CurrentDate = table.Column<DateTime>(nullable: false),
+                    Hours = table.Column<int>(nullable: false),
+                    Minutes = table.Column<int>(nullable: false),
+                    Seconds = table.Column<int>(nullable: false),
+                    UserId = table.Column<int>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Dates", x => x.DateId);
+                    table.ForeignKey(
+                        name: "FK_Dates_AspNetUsers_UserId",
+                        column: x => x.UserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "VacationDays",
+                columns: table => new
+                {
+                    VacationDayID = table.Column<int>(nullable: false)
+                        .Annotation("MySQL:AutoIncrement", true),
+                    UserId = table.Column<int>(nullable: false),
+                    From = table.Column<DateTime>(nullable: false),
+                    To = table.Column<DateTime>(nullable: false),
+                    Reason = table.Column<string>(nullable: true),
+                    State = table.Column<short>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_VacationDays", x => x.VacationDayID);
+                    table.ForeignKey(
+                        name: "FK_VacationDays_AspNetUsers_UserId",
+                        column: x => x.UserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Tasks",
+                columns: table => new
+                {
+                    TaskId = table.Column<int>(nullable: false)
+                        .Annotation("MySQL:AutoIncrement", true),
+                    Title = table.Column<string>(nullable: true),
+                    Description = table.Column<string>(nullable: true),
+                    StateId = table.Column<int>(nullable: false),
+                    UserId = table.Column<int>(nullable: false),
+                    Priority = table.Column<int>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Tasks", x => x.TaskId);
+                    table.ForeignKey(
+                        name: "FK_Tasks_States_StateId",
+                        column: x => x.StateId,
+                        principalTable: "States",
+                        principalColumn: "StateId",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "ProfileModels",
                 columns: table => new
                 {
@@ -257,6 +375,51 @@ namespace CoreDatabase.Migrations
                         column: x => x.SubDomain_SubDomainId,
                         principalTable: "SubDomainModels",
                         principalColumn: "SubDomainId",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Clockings",
+                columns: table => new
+                {
+                    ClockingId = table.Column<int>(nullable: false)
+                        .Annotation("MySQL:AutoIncrement", true),
+                    DateId = table.Column<int>(nullable: false),
+                    StartTime = table.Column<DateTime>(nullable: false),
+                    EndTime = table.Column<DateTime>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Clockings", x => x.ClockingId);
+                    table.ForeignKey(
+                        name: "FK_Clockings_Dates_DateId",
+                        column: x => x.DateId,
+                        principalTable: "Dates",
+                        principalColumn: "DateId",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "UserTaskModels",
+                columns: table => new
+                {
+                    TaskId = table.Column<int>(nullable: false),
+                    UserId = table.Column<int>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_UserTaskModels", x => new { x.TaskId, x.UserId });
+                    table.ForeignKey(
+                        name: "FK_UserTaskModels_Tasks_TaskId",
+                        column: x => x.TaskId,
+                        principalTable: "Tasks",
+                        principalColumn: "TaskId",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_UserTaskModels_AspNetUsers_UserId",
+                        column: x => x.UserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
@@ -309,6 +472,16 @@ namespace CoreDatabase.Migrations
                 column: "RoleId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_AspNetUserRoles_RoleModelId",
+                table: "AspNetUserRoles",
+                column: "RoleModelId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_AspNetUserRoles_UserModelId",
+                table: "AspNetUserRoles",
+                column: "UserModelId");
+
+            migrationBuilder.CreateIndex(
                 name: "EmailIndex",
                 table: "AspNetUsers",
                 column: "NormalizedEmail");
@@ -320,6 +493,16 @@ namespace CoreDatabase.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
+                name: "IX_Clockings_DateId",
+                table: "Clockings",
+                column: "DateId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Dates_UserId",
+                table: "Dates",
+                column: "UserId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_IbanModels_Profile_ProfileModelId",
                 table: "IbanModels",
                 column: "Profile_ProfileModelId");
@@ -328,6 +511,21 @@ namespace CoreDatabase.Migrations
                 name: "IX_ProfileModels_SubDomain_SubDomainId",
                 table: "ProfileModels",
                 column: "SubDomain_SubDomainId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Tasks_StateId",
+                table: "Tasks",
+                column: "StateId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_UserTaskModels_UserId",
+                table: "UserTaskModels",
+                column: "UserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_VacationDays_UserId",
+                table: "VacationDays",
+                column: "UserId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -348,6 +546,9 @@ namespace CoreDatabase.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
+                name: "Clockings");
+
+            migrationBuilder.DropTable(
                 name: "FormulaModels");
 
             migrationBuilder.DropTable(
@@ -363,16 +564,34 @@ namespace CoreDatabase.Migrations
                 name: "UpdatesModels");
 
             migrationBuilder.DropTable(
+                name: "UserModels");
+
+            migrationBuilder.DropTable(
+                name: "UserTaskModels");
+
+            migrationBuilder.DropTable(
+                name: "VacationDays");
+
+            migrationBuilder.DropTable(
                 name: "AspNetRoles");
 
             migrationBuilder.DropTable(
-                name: "AspNetUsers");
+                name: "Dates");
 
             migrationBuilder.DropTable(
                 name: "ProfileModels");
 
             migrationBuilder.DropTable(
+                name: "Tasks");
+
+            migrationBuilder.DropTable(
+                name: "AspNetUsers");
+
+            migrationBuilder.DropTable(
                 name: "SubDomainModels");
+
+            migrationBuilder.DropTable(
+                name: "States");
         }
     }
 }

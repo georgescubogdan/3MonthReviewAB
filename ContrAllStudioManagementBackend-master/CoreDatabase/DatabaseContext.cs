@@ -26,7 +26,7 @@ namespace CoreDatabase
         private static string GetConnectionString()
         {
             //return "server=86.123.53.33;port=63306;uid=BFY;password=contrAll;database=test-api";
-            return "server=contrall.mysql.database.azure.com;port=3306;uid=BFY@contrall;password=ContrAll2018;database=admindb3;convert zero datetime=True";
+            return "server=contrall.mysql.database.azure.com;port=3306;uid=BFY@contrall;password=ContrAll2018;database=anasdb;convert zero datetime=True";
         }
 
 
@@ -56,6 +56,25 @@ namespace CoreDatabase
             modelBuilder.Entity<Clocking>()
                 .HasKey(c => c.ClockingId);
 
+            modelBuilder.Entity<State>()
+                .HasKey(s => s.StateId);
+
+            modelBuilder.Entity<State>()
+                .HasMany(task => task.Tasks)
+                .WithOne(st => st.State);
+
+            modelBuilder.Entity<Task>()
+                .HasKey(t => t.TaskId);
+            modelBuilder.Entity<Task>()
+                .HasMany(comm => comm.Comments)
+                .WithOne(t => t.Task);
+
+
+            modelBuilder.Entity<UserModel>()
+                .HasMany(comm => comm.Comments)
+                .WithOne(u => u.User);
+                
+
             modelBuilder.Entity<Date>()
                 .HasMany(date => date.Clockings)
                 .WithOne(clocking => clocking.Date)
@@ -74,6 +93,17 @@ namespace CoreDatabase
                 .HasMany(sdm => sdm.Profiles)
                 .WithOne(p => p.SubDomain);
 
+
+            modelBuilder.Entity<UserTaskModel>()
+                .HasKey(ut => new { ut.TaskId, ut.UserId });
+            modelBuilder.Entity<UserTaskModel>()
+                .HasOne(ut => ut.Task)
+                .WithMany(u => u.UserTaskModels)
+                .HasForeignKey(ut => ut.TaskId);
+            modelBuilder.Entity<UserTaskModel>()
+                .HasOne(ut => ut.User)
+                .WithMany(t => t.UserTaskModels)
+                .HasForeignKey(ut => ut.UserId);
             //modelBuilder.Entity<UserModel>().Ignore(e => e.FullName);
 
             modelBuilder.Entity<UserRoleModel>(userRole =>
@@ -121,6 +151,11 @@ namespace CoreDatabase
         public DbSet<RoleModel> AppRoles { get; set; }
         public DbSet<UserRoleModel> AppUserRoleModel { get; set; }
         public DbSet<VacationDayModel> VacationDays { get; set; }
+
+        public DbSet<Task> Tasks { get; set; }
+        public DbSet<UserTaskModel> UserTaskModels { get; set; }
+        public DbSet<State> States { get; set; }
+        public DbSet<Comment> Comments { get; set; }
     }
 }
 

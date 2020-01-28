@@ -50,3 +50,36 @@
     background-size: 14px;
     background-position: top left;
   }
+  .my-tooltip {
+    position: relative;
+  }
+  
+  .my-tooltip .my-tooltiptext {
+    visibility: hidden;
+    width: 80px;
+    font-size: 14px;
+    background-color: var(--neutral-color);
+    color: var(--text-color);
+    text-align: center;
+    border-radius: 6px;
+    padding: 2px 1px;
+    text-transform: capitalize;
+    /* Position the tooltip */
+    position: absolute;
+    left: 0%;
+    bottom: 130%;
+    z-index: 1;
+  }
+  
+  .my-tooltip:hover .my-tooltiptext {
+    visibility: visible;
+    opacity: 1 !important;
+    z-index: 9999 !important;
+  }
+
+.tooltip-inner {
+  background-color: var(--color-1);
+  color: white;
+  font-weight: bold;
+  width: 130px;
+}

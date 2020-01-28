@@ -17,11 +17,12 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 
+import { DragDropModule } from '@angular/cdk/drag-drop';
+
 @NgModule({
   declarations: [
     AppComponent,
     NavBarComponent,
-    FooterComponent
   ],
   imports: [
     BrowserModule,
@@ -34,7 +35,9 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     DashboardModule,
     ToastrModule.forRoot(),
     BrowserAnimationsModule,
+    DragDropModule,
   ],
+
   providers: [{ provide: HTTP_INTERCEPTORS, useClass: AuthHttpInterceptor, multi: true }, ],
   bootstrap: [AppComponent]
 })

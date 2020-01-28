@@ -17,6 +17,7 @@ import { DatesDetailsComponent } from '../clocking-view/dates-details/dates-deta
 import { GUARDS } from 'src/app/guards/GUARDS';
 import { MasterGuard } from 'src/app/guards/master-guard.service';
 import { VacationDaysViewComponent } from '../vacation-days-view/vacation-days-view.component';
+import { TasksViewComponent } from '../tasks-view/tasks-view.component';
 
 const routes: Routes = [
   { path: '', redirectTo: 'login', pathMatch: 'full' },
@@ -128,6 +129,11 @@ const routes: Routes = [
         path: 'vacation-days-view',
         canActivate: [AuthGuardService],
         component: VacationDaysViewComponent,
+      },
+      {
+        path: 'tasks-view',
+        canActivate: [AuthGuardService],
+        component: TasksViewComponent,
       },
       {
         path: 'facturi/facturaNoua',

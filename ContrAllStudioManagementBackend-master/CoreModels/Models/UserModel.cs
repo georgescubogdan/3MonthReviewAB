@@ -26,5 +26,9 @@ namespace CoreModels.Models
        public virtual List<Date> Date { get; set; }
 
         public virtual List<VacationDayModel> VacationDays { get; set; }
+
+        public virtual ICollection<UserTaskModel> UserTaskModels { get; set; }
+
+        public ICollection<Comment> Comments { get; set; }
     }
 }

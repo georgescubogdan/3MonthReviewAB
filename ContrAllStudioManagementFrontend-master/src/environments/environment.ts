@@ -29,19 +29,24 @@ export const environment = {
   // formulaApiUrl: 'https://192.168.1.84:44325/api/FormulaModels',
   // userApiUrl: 'https://192.168.1.84:44325/api/User'
 
-  identityApiUrl: 'http://192.168.1.84:51488/Account',
-  clientApiUrl: 'http://192.168.1.84:51488/api/Client',
-  legalDayApiUrl: 'http://192.168.1.84:51488/api/LegalDays',
-  ibanApiUrl: 'http://192.168.1.84:51488/api/IbanModels',
-  updateTimestampApiUrl: 'http://192.168.1.84:51488/api/UpdatesModels',
-  subDomainsApiUrl: 'http://192.168.1.84:51488/api/SubDomainModels',
-  profilesApiUrl: 'http://192.168.1.84:51488/api/ProfileModels',
-  sporsApiUrl: 'http://192.168.1.84:51488/api/Spors',
-  retainersApiUrl: 'http://192.168.1.84:51488/api/Retainers',
-  formulaApiUrl: 'http://192.168.1.84:51488/api/FormulaModels',
-  userApiUrl: 'http://192.168.1.84:51488/api/User',
-  clockingApiUrl: 'http://192.168.1.84:51488/api/Clocking',
-  dateApiUrl: 'http://192.168.1.84:51488/api/Dates'
+  identityApiUrl: 'https://192.168.0.3:44325/Account',
+  clientApiUrl: 'https://192.168.0.3:44325/api/Client',
+  legalDayApiUrl: 'https://192.168.0.3:44325/api/LegalDays',
+  ibanApiUrl: 'https://192.168.0.3:44325/api/IbanModels',
+  updateTimestampApiUrl: 'https://192.168.0.3:44325/api/UpdatesModels',
+  subDomainsApiUrl: 'https://192.168.0.3:44325/api/SubDomainModels',
+  profilesApiUrl: 'https://192.168.0.3:44325/api/ProfileModels',
+  sporsApiUrl: 'https://192.168.0.3:44325/api/Spors',
+  retainersApiUrl: 'https://192.168.0.3:44325/api/Retainers',
+  formulaApiUrl: 'https://192.168.0.3:44325/api/FormulaModels',
+  userApiUrl: 'https://192.168.0.3:44325/api/User',
+  clockingApiUrl: 'https://192.168.0.3:44325/api/Clocking',
+  dateApiUrl: 'https://192.168.0.3:44325/api/Dates',
+  vacationDaysApiUrl: 'https://192.168.0.3:44325/api/VacationDays',
+  roleModelsApiUrl: 'https://192.168.0.3:44325/Account',
+  taskApiUrl: 'https://192.168.0.3:44325/api/Tasks',
+  statesApiUrl: 'https://192.168.0.3:44325/api/States'
+
 
 };
 

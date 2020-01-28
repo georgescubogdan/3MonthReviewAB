@@ -74,6 +74,12 @@
             </div>
             <h6 style="margin-left: 10px;" [ngClass]="{'close-text': expand==false, 'expand-text': expand==true}">Zile concediu</h6>
           </a>
+          <a [routerLink]="['tasks-view']" class="d-flex tab" (click)="tabSelect(12)" [ngClass]="{'tab-selected': tabSelected==12}">
+            <div [ngClass]="{'close-icon': expand==false, 'expand-icon': expand==true}">
+                <img src="../../../assets/images/assignment_24px.svg" class="tab-icon">
+            </div>
+            <h6 style="margin-left: 10px;" [ngClass]="{'close-text': expand==false, 'expand-text': expand==true}">Tasks</h6>
+          </a>
 
 
 

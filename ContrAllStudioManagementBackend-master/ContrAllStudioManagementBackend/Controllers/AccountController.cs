@@ -142,7 +142,7 @@ namespace ContrAllStudioManagementBackend.Controllers
         }
 
         [HttpPost]
-        [Authorize]
+        
         public async Task<object> Register([FromBody] RegisterDto model)
         {
             var user = new UserModel

@@ -1,0 +1,27 @@
+<div class="d-flex flex-wrap" >
+  <div class="col-md-3 " *ngFor="let state of states" >
+    <div class="drag-container" >
+      <div class="section-heading">{{state.title}}
+        <button type="button" class="btn btn-default btn-sm" (click)="openEditState(state.stateId)">
+          <i class="fas fa-edit"></i>
+        </button>
+        <button type="button" class="btn btn-default btn-sm" (click)="deleteState(state.stateId)">
+          <i class="fas fa-trash-alt"></i>
+        </button>
+      </div>
+  
+      <div cdkDropList id="{{state.title}}" [cdkDropListData]="state.tasks"
+        [cdkDropListConnectedTo]="connectedTo" class="item-list" (cdkDropListDropped)="drop($event)">
+        <div class="item-box" *ngFor="let task of state.tasks" cdkDrag (click)="openTask(task)" >{{task.title}}
+          
+        </div>
+      </div>
+      <button class="btn focus-btn" style="position: relative" (click)="openTaskAdd(state.stateId)" >+ add task</button>
+    </div>
+  </div>
+  
+    <div style="padding: 20px">
+      <button class="btn focus-btn" style="position: relative" (click)="openStateAdd(0)" >ADD STATUS</button>
+    </div>
+  
+</div>

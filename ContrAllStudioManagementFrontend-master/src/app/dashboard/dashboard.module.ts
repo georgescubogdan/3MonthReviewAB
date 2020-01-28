@@ -51,6 +51,11 @@ import { SecretarGuardService } from '../guards/secretar-guard.service';
 import { VacationDaysViewComponent } from './vacation-days-view/vacation-days-view.component';
 import { AddVacationDaysComponent } from './vacation-days-view/add-vacation-day/add-vacation-days-view.component';
 import { EditVacationDayComponent } from './vacation-days-view/edit-vacation-day/edit-vacation-day.component';
+import { TasksViewComponent } from './tasks-view/tasks-view.component';
+import { DragDropModule } from '@angular/cdk/drag-drop';
+import { StateComponent } from './tasks-view/state/state.component';
+import { TaskComponent } from './tasks-view/task/task.component';
+import { TaskViewComponent } from './tasks-view/task-view/task-view.component';
 
 @NgModule({
   declarations: [
@@ -91,6 +96,10 @@ import { EditVacationDayComponent } from './vacation-days-view/edit-vacation-day
     VacationDaysViewComponent,
     AddVacationDaysComponent,
     EditVacationDayComponent,
+    TasksViewComponent,
+    StateComponent,
+    TaskComponent,
+    TaskViewComponent,
   ],
   imports: [
     BrowserModule,
@@ -103,7 +112,8 @@ import { EditVacationDayComponent } from './vacation-days-view/edit-vacation-day
     FormsModule,
     BrowserAnimationsModule,
     AccordionModule,
-    NgbModule
+    NgbModule,
+    DragDropModule
   ],
   entryComponents: [
     AddClientComponent,
@@ -129,6 +139,9 @@ import { EditVacationDayComponent } from './vacation-days-view/edit-vacation-day
     EditUserRoleComponent,
     AddVacationDaysComponent,
     EditVacationDayComponent,
+    StateComponent,
+    TaskComponent,
+    TaskViewComponent,
   ],
   providers: [
     DecimalPipe,
